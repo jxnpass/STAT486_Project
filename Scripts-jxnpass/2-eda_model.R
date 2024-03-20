@@ -80,6 +80,8 @@ ggplot(data = crime_num, aes(x = Date, y = Num_Crimes)) +
   geom_line(mapping = aes(color = is_FullMoon_BLOCK)) + 
   facet_wrap(~ Time_Interval, labeller = "label_both") 
 
+write.csv(crime_num, file = "Data/crime_num.csv")
+
 ### Step 3: Possible models ------------------------
 
 crime_mod <- crime_num # %>% filter(!Arrest, Domestic)
@@ -120,12 +122,7 @@ minYear <- crime_mod$Year %>% min()
 minInt <- crime_mod$TS_interval %>% min()
 
 tms_day <- ts(data = crime_mod$Num_Crimes, frequency = 1, start = c(minInt, 1))
-num_features <- c("temp"  ,   "feelslike"         ,  
-                  "dew"              ,    "humidity"        ,     "precip"            ,  
-                  "snow"             ,   "windgust"          ,    "winddir"         ,     
-                  "cloudcover"       ,   "severerisk"        ,  
-                  "is_FullMoon_BLOCK",    "suntime",              'Holiday', "Time_Interval")
-X <- model.matrix(~ -1 + ., data=crime_mod %>% select(all_of(num_features)))[,-11]
+
 sarima_model <- auto.arima(tms_day, xreg = X)
 sarima_model_noX <- auto.arima(tms_day)
 summary(sarima_model)
@@ -146,52 +143,7 @@ ggplot(data = crime_mod) +
 (preds - y)^2 %>% mean() %>% sqrt()
 sd(y)
 
-# ACP - auto regressive conditional poisson
-
-fts <- crime_mod %>% 
-  select(temp, feelslike, suntime, is_FullMoon_BLOCK, Num_Crimes)
-fts <- crime_mod %>% 
-  select(Num_Crimes, temp, suntime, is_FullMoon_BLOCK)
 
 
-ar_pois <- acp(Num_Crimes ~ ., p = 4, q = 1, data = fts)
-ar_pois <- acp(X, y, p = 4, q = 2, startval = NULL, varopt=TRUE)
-# ar_pois <- acp(Num_Crimes ~ . -Date-Day-Month-Year-Holiday-preds, p = 2, q = 1,
-#                data = crime_num)
-ar_pois_summary <- summary(ar_pois)
-ar_pois_summary$coefficients[,c(1,4)] %>% round(digits = 4)
-
-preds <- ar_pois$fitted.values
-
-acf(ar_pois$residuals, lag.max = nrow(crime_mod))
-
-ggplot(data = crime_mod) +
-  geom_line(mapping = aes(x = Date, y = Num_Crimes, color = Time_Interval)) + 
-  geom_line(mapping = aes(x = Date, y = preds), color = "black") + 
-  facet_wrap(~ Time_Interval, labeller = "label_both") 
-
-ggplot(data = crime_mod) +
-  geom_line(mapping = aes(x = Date, y = Num_Crimes)) +
-#  geom_point(mapping = aes(x = TS_interval, y = Num_Crimes)) +
-  geom_line(mapping = aes(x = Date, y = preds), color = "blue") 
-
-(preds - y)^2 %>% mean() %>% sqrt()
-sd(y)
-cor(preds, y)
-
-# Cross-Validate on ACP????
-
-# scores for the first observation
-# i = 105
-pred_test <- preds
-y_test  <- y
-
-# logarithmic (equivalent to deviance score up to a constant) 
-dev_score = -log(dpois(y_test, lambda=pred_test))
-
-ggplot() +
-  geom_line(mapping = aes(x = TS_interval, y = y), col = "black") +
-  geom_line(mapping = aes(x = TS_interval, y = pred_test), col = "blue") +
-  geom_line(mapping = aes(x = TS_interval, y = dev_score), color = "red")
 
 
