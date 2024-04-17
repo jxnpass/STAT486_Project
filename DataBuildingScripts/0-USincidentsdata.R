@@ -1,0 +1,67 @@
+crisis_incidents <- data.frame(
+  Date = c(
+    "2014-07-17", "2014-08-09", "2014-11-22",
+    "2015-04-02", "2015-04-04", "2015-04-12",
+    "2016-07-05", "2016-07-06", "2018-03-18",
+    "2018-09-06", "2020-03-13", "2020-05-25",
+    "2021-04-11", "2022-04-04", "2010-04-20",
+    "2011-05-01", "2012-07-20", "2012-12-14",
+    "2013-04-15", "2014-08-09", "2015-06-17",
+    "2015-12-02", "2016-06-12", "2017-01-21",
+    "2017-08-12", "2017-10-01", "2018-02-14",
+    "2019-08-03", "2020-03-15", "2020-08-23",
+    "2021-01-06", "2021-12-01", "2022-05-24"
+  ),
+  Title = c(
+    "Death of Eric Garner", "Death of Michael Brown", "Death of Tamir Rice",
+    "Death of Eric Harris", "Death of Walter Scott", "Death of Freddie Gray",
+    "Death of Alton Sterling", "Death of Philando Castile", "Death of Stephon Clark",
+    "Death of Botham Jean", "Death of Breonna Taylor", "Death of George Floyd",
+    "Death of Daunte Wright", "Death of Patrick Lyoya", "Deepwater Horizon oil rig explosion",
+    "Osama bin Laden's death announced", "Aurora movie theater shooting",
+    "Sandy Hook Elementary School shooting", "Boston Marathon bombing",
+    "Shooting of Michael Brown", "Charleston church shooting", "San Bernardino attack",
+    "Pulse nightclub shooting", "Women's March", "Charlottesville rally",
+    "Las Vegas shooting", "Stoneman Douglas High School shooting", "El Paso shooting",
+    "COVID-19 widespread lockdowns begin", "Shooting of Jacob Blake",
+    "Storming of the US Capitol", "Emergence of Omicron variant", "Uvalde school shooting"
+  ),
+  Description = c(
+    "Eric Garner uttered 'I can’t breathe' 11 times as NYPD Officer Daniel Pantaleo pinned him, leading to Garner’s death. Pantaleo was fired, and Garner’s family received a $5.9 million settlement.",
+    "Michael Brown was shot to death by Ferguson, Missouri police officer Darren Wilson, sparking civil unrest.",
+    "12-year-old Tamir Rice was shot and killed by Cleveland police over a toy gun. His family received a $6 million settlement.",
+    "Eric Harris was shot in the back and killed in Tulsa, Oklahoma by Reserve Deputy Robert Charles Bates, who was convicted of manslaughter.",
+    "Walter Scott was shot in the back by North Charleston police officer Michael Slager, who was convicted of murder.",
+    "Freddie Gray died from a severe spinal injury in Baltimore police custody. His family received a $6.4 million settlement.",
+    "Alton Sterling was shot by Baton Rouge police. His family settled a wrongful death lawsuit for $4.5 million.",
+    "Philando Castile was shot during a traffic stop in Minnesota. His family received a $3.8 million settlement.",
+    "Stephon Clark was shot in Sacramento, California by police who mistook his cell phone for a gun.",
+    "Botham Jean was shot by off-duty police officer Amber Guyger in his own apartment. Guyger was convicted of murder.",
+    "Breonna Taylor was shot eight times by police during a raid. Her family received a $12 million settlement.",
+    "George Floyd was killed by Minneapolis police officer Derek Chauvin, who knelt on Floyd's neck. Floyd’s family settled for $27 million.",
+    "Daunte Wright was shot by officer Kim Potter during a traffic stop. Potter was convicted of manslaughter.",
+    "Patrick Lyoya was shot by a Grand Rapids police officer during a scuffle. The case was under investigation.",
+    "The Deepwater Horizon oil rig exploded, causing a massive oil spill.",
+    "Osama bin Laden was killed by U.S. forces in Pakistan.",
+    "A shooter opened fire in a movie theater in Aurora, Colorado.",
+    "A gunman killed 26 at Sandy Hook Elementary School in Newtown, Connecticut.",
+    "Two bombs exploded near the finish line of the Boston Marathon.",
+    "Michael Brown's shooting led to protests and national debate on police violence.",
+    "A gunman killed nine in a racially motivated attack at a Charleston church.",
+    "A terrorist attack in San Bernardino, California, left 14 dead.",
+    "A mass shooting at the Pulse nightclub in Orlando, Florida.",
+    "Millions marched in the Women's March the day after the presidential inauguration.",
+    "A rally in Charlottesville, Virginia, turned deadly.",
+    "A gunman opened fire on a Las Vegas concert, the deadliest mass shooting in modern U.S. history.",
+    "Seventeen people were killed in a shooting at Stoneman Douglas High School in Parkland, Florida.",
+    "A gunman killed 23 people in a racially motivated attack at a Walmart in El Paso, Texas.",
+    "The COVID-19 pandemic led to widespread lockdowns beginning in March 2020, significantly impacting daily life globally.",
+    "Jacob Blake was shot by police in Kenosha, Wisconsin, leading to widespread protests.",
+    "Supporters of President Donald Trump stormed the US Capitol, leading to deaths, injuries, and significant political upheaval.",
+    "The Omicron variant of COVID-19 led to concerns of another wave of the pandemic.",
+    "A mass shooting at Robb Elementary School in Uvalde, Texas, left 21 dead, sparking renewed debates over gun control."
+  )
+) %>% 
+  mutate(Date = as.Date(Date))
+
+write.csv(crisis_incidents, "Data/nationalincidents.csv")
